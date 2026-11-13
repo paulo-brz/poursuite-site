@@ -1,0 +1,167 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Photo from '../../components/Photo.astro';
+import { ARTICLES, formatDatePt } from '../../lib/articles';
+import { SITE, pathFor } from '../../i18n/routes';
+import { article, breadcrumb } from '../../lib/schema';
+import { t } from '../../content';
+
+export function getStaticPaths() {
+  return ARTICLES.map((a) => ({ params: { slug: a.slug }, props: { slug: a.slug } }));
+}
+
+const { slug } = Astro.props;
+const a = ARTICLES.find((x) => x.slug === slug)!;
+const c = t('pt');
+const url = `${SITE}/conteudos/${slug}/`;
+const related = a.related ? c.services[a.related] : undefined;
+const others = ARTICLES.filter((x) => x.slug !== slug).slice(0, 3);
+const jsonLd = [
+  article({ title: a.title, description: a.description, url, datePublished: a.date, dateModified: a.updated }),
+  breadcrumb([
+    { name: 'Início', url: SITE + '/' },
+    { name: 'Conteúdos', url: SITE + '/conteudos/' },
+    { name: a.title, url },
+  ]),
+];
+const { Content } = a;
+---
+
+<Base lang="pt" title={a.seoTitle ?? `${a.title} | Poursuite`} description={a.description} path={`/conteudos/${slug}/`} jsonLd={jsonLd} ogType="article">
+  <article>
+    <header class="page-head">
+      <div class="wrap">
+        <Breadcrumbs
+          label="Você está em"
+          items={[{ name: 'Início', href: '/' }, { name: 'Conteúdos', href: '/conteudos/' }, { name: a.title }]}
+        />
+        <h1>{a.title}</h1>
+        <p class="meta">
+          <time datetime={a.date}>{formatDatePt(a.date)}</time>
+        </p>
+      </div>
+    </header>
+    {a.image && (
+      <div class="wrap cover">
+        <Photo image={a.image} lang="pt" eager sizes="(min-width: 1180px) 1100px, 100vw" />
+      </div>
+    )}
+    <div class="section">
+      <div class="wrap body-grid">
+        <div class="prose">
+          <Content />
+        </div>
+        <aside class="side">
+          {
+            related && a.related && (
+              <div class="related">
+                <p class="side__title">Serviço relacionado</p>
+                <a href={pathFor(a.related, 'pt')}>
+                  <strong>{related.name}</strong>
+                  <span>{related.summary}</span>
+                </a>
+              </div>
+            )
+          }
+          {
+            others.length > 0 && (
+              <div>
+                <p class="side__title">Leia também</p>
+                <ul>
+                  {others.map((o) => (
+                    <li>
+                      <a href={`/conteudos/${o.slug}/`}>{o.title}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )
+          }
+        </aside>
+      </div>
+    </div>
+  </article>
+  <CtaBand title={c.home.finalTitle} text={c.home.finalText} button={c.ui.ctaPrimary} href={pathFor('contact', 'pt')} />
+</Base>
+
+<style>
+  .page-head {
+    padding-block: clamp(2rem, 4vw, 3rem) clamp(2rem, 4vw, 2.75rem);
+  }
+  h1 {
+    font-size: clamp(2rem, 1.5rem + 2.2vw, 3.1rem);
+    max-width: 20em;
+  }
+  .meta {
+    margin-top: 1rem;
+    color: var(--slate);
+    font-size: 0.95rem;
+  }
+  .prose {
+    font-size: 1.08rem;
+  }
+  .body-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
+    gap: 3rem clamp(2.5rem, 6vw, 5rem);
+    align-items: start;
+  }
+  .side {
+    position: sticky;
+    top: 6.5rem;
+    display: grid;
+    gap: 2.5rem;
+  }
+  .side__title {
+    font-weight: 600;
+    color: var(--slate);
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+  }
+  .related a {
+    display: block;
+    padding: 1.25rem 1.4rem;
+    background: var(--mist);
+    border-left: 3px solid var(--teal);
+    color: inherit;
+    text-decoration: none;
+  }
+  .related strong {
+    display: block;
+    font-family: var(--serif);
+    font-size: 1.2rem;
+  }
+  .related span {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.93rem;
+    color: var(--ink-2);
+  }
+  .side ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .side li a {
+    display: block;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .side li a:hover {
+    color: var(--teal-deep);
+  }
+  @media (max-width: 900px) {
+    .body-grid {
+      grid-template-columns: 1fr;
+    }
+    .side {
+      position: static;
+    }
+  }
+</style>

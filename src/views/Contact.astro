@@ -1,0 +1,255 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { pathFor, urlFor, type Lang } from '../i18n/routes';
+import { t, COMPANY } from '../content';
+import { breadcrumb, organization } from '../lib/schema';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const c = t(lang);
+const f = c.contact;
+const meta = c.meta.contact;
+const jsonLd = [
+  organization(lang, c.meta.home.description),
+  breadcrumb([
+    { name: c.ui.home, url: urlFor('home', lang) },
+    { name: f.h1, url: urlFor('contact', lang) },
+  ]),
+];
+---
+
+<Base lang={lang} title={meta.title} description={meta.description} pageKey="contact" jsonLd={jsonLd}>
+  <section class="page-head">
+    <div class="wrap">
+      <Breadcrumbs label={c.ui.breadcrumb} items={[{ name: c.ui.home, href: pathFor('home', lang) }, { name: f.h1 }]} />
+      <h1>{f.h1}</h1>
+      <p class="lede">{f.lede}</p>
+    </div>
+  </section>
+
+  <section class="section contact">
+    <div class="wrap contact-grid">
+      <form
+        class="form"
+        method="post"
+        action="/api/contato.php"
+        data-thanks={pathFor('thanks', lang)}
+        data-error={f.error}
+        data-sending={f.sending}
+      >
+        <h2>{f.formTitle}</h2>
+        <input type="hidden" name="lang" value={lang} />
+        <div class="hp" aria-hidden="true">
+          <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+        </div>
+        <div class="row">
+          <label class="field">
+            <span>{f.name}</span>
+            <input type="text" name="name" required autocomplete="name" maxlength="120" />
+          </label>
+          <label class="field">
+            <span>{f.email}</span>
+            <input type="email" name="email" required autocomplete="email" maxlength="160" />
+          </label>
+        </div>
+        <div class="row">
+          <label class="field">
+            <span>{f.company}</span>
+            <input type="text" name="company" autocomplete="organization" maxlength="160" />
+          </label>
+          <label class="field">
+            <span>{f.phone}</span>
+            <input type="tel" name="phone" autocomplete="tel" maxlength="40" />
+          </label>
+        </div>
+        <label class="field">
+          <span>{f.profile}</span>
+          <select name="profile">
+            {f.profiles.map((p) => <option>{p}</option>)}
+          </select>
+        </label>
+        <label class="field">
+          <span>{f.message}</span>
+          <textarea name="message" rows="6" required maxlength="5000" aria-describedby="msg-hint"></textarea>
+          <small id="msg-hint">{f.messageHint}</small>
+        </label>
+        <label class="check">
+          <input type="checkbox" name="consent" value="yes" required />
+          <span>
+            {f.consent} <a href={pathFor('privacy', lang)}>{c.ui.privacy}</a>.
+          </span>
+        </label>
+        <p class="form__error" role="alert" hidden></p>
+        <button class="btn" type="submit">{f.submit}</button>
+      </form>
+
+      <aside class="direct">
+        <h2>{f.directTitle}</h2>
+        <dl>
+          <dt>{f.emailLabel}</dt>
+          <dd><a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a></dd>
+          <dt>{f.addressLabel}</dt>
+          <dd class="addr">{f.address}</dd>
+        </dl>
+        <p class="muted conf">{f.confidentiality}</p>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('form.form');
+  if (form) {
+    const err = form.querySelector<HTMLElement>('.form__error')!;
+    const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    const label = btn.textContent;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      err.hidden = true;
+      btn.disabled = true;
+      btn.textContent = form.dataset.sending ?? label;
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        window.location.href = form.dataset.thanks!;
+      } catch {
+        err.textContent = form.dataset.error ?? '';
+        err.hidden = false;
+        btn.disabled = false;
+        btn.textContent = label;
+      }
+    });
+  }
+</script>
+
+<style>
+  .contact {
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+  }
+  .page-head {
+    padding-block: clamp(2rem, 4vw, 3rem) clamp(2.5rem, 5vw, 3.5rem);
+    border-bottom: 1px solid var(--line);
+  }
+  .page-head .lede {
+    margin-top: 1.25rem;
+  }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+    gap: 3rem clamp(2.5rem, 6vw, 5rem);
+    align-items: start;
+  }
+  .form h2,
+  .direct h2 {
+    font-size: var(--step-2);
+    margin-bottom: 1.5rem;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 1.25rem;
+  }
+  .field {
+    display: block;
+    margin-bottom: 1.25rem;
+  }
+  .field span {
+    display: block;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+  }
+  input[type='text'],
+  input[type='email'],
+  input[type='tel'],
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.75rem 0.85rem;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--ink);
+    background: var(--white);
+    border: 1.5px solid #b8c4c2;
+    border-radius: 2px;
+  }
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--teal-deep);
+    box-shadow: 0 0 0 3px rgba(67, 163, 154, 0.25);
+  }
+  textarea {
+    resize: vertical;
+    min-height: 9rem;
+  }
+  small {
+    display: block;
+    margin-top: 0.35rem;
+    color: var(--slate);
+    font-size: 0.88rem;
+  }
+  .check {
+    display: flex;
+    gap: 0.7rem;
+    align-items: flex-start;
+    margin: 0.5rem 0 1.5rem;
+    font-size: 0.93rem;
+    color: var(--ink-2);
+  }
+  .check input {
+    margin-top: 0.25rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    accent-color: var(--teal-deep);
+    flex: none;
+  }
+  .hp {
+    position: absolute;
+    left: -9999px;
+  }
+  .form__error {
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    border-left: 3px solid #b3261e;
+    background: #fbeeed;
+    color: #7a1a14;
+  }
+  .direct {
+    background: var(--paper);
+    padding: 2rem;
+  }
+  dl {
+    margin: 0;
+  }
+  dt {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--slate);
+  }
+  dd {
+    margin: 0.25rem 0 1.25rem;
+  }
+  .addr {
+    white-space: pre-line;
+  }
+  .conf {
+    font-size: 0.92rem;
+    border-top: 1px solid var(--line);
+    padding-top: 1.25rem;
+  }
+  @media (max-width: 860px) {
+    .contact-grid,
+    .row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

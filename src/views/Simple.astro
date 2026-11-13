@@ -1,0 +1,79 @@
+---
+// Páginas de texto simples: política de privacidade e confirmação de envio.
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { pathFor, urlFor, type Lang } from '../i18n/routes';
+import { t } from '../content';
+import { breadcrumb } from '../lib/schema';
+
+interface Props {
+  lang: Lang;
+  key: 'privacy' | 'thanks';
+}
+const { lang, key } = Astro.props;
+const c = t(lang);
+const meta = c.meta[key];
+---
+
+{
+  key === 'privacy' ? (
+    <Base
+      lang={lang}
+      title={meta.title}
+      description={meta.description}
+      pageKey="privacy"
+      jsonLd={[
+        breadcrumb([
+          { name: c.ui.home, url: urlFor('home', lang) },
+          { name: c.privacy.h1, url: urlFor('privacy', lang) },
+        ]),
+      ]}
+    >
+      <section class="section simple">
+        <div class="wrap">
+          <Breadcrumbs label={c.ui.breadcrumb} items={[{ name: c.ui.home, href: pathFor('home', lang) }, { name: c.privacy.h1 }]} />
+          <h1>{c.privacy.h1}</h1>
+          <p class="muted updated">{c.privacy.updated}</p>
+          <div class="prose">
+            {c.privacy.sections.map((s) => (
+              <>
+                <h2>{s.h2}</h2>
+                {s.paras?.map((p) => <p>{p}</p>)}
+              </>
+            ))}
+          </div>
+        </div>
+      </section>
+    </Base>
+  ) : (
+    <Base lang={lang} title={meta.title} description={meta.description} pageKey="thanks" noindex>
+      <section class="section simple thanks">
+        <div class="wrap">
+          <h1>{c.thanks.h1}</h1>
+          <p class="lede">{c.thanks.text}</p>
+          <p class="back">
+            <a class="btn btn--ghost" href={pathFor('home', lang)}>{c.thanks.back}</a>
+          </p>
+        </div>
+      </section>
+    </Base>
+  )
+}
+
+<style>
+  .simple h1 {
+    font-size: var(--step-3);
+  }
+  .updated {
+    margin: 0.75rem 0 2.5rem;
+  }
+  .thanks {
+    min-height: 50vh;
+  }
+  .thanks .lede {
+    margin-top: 1.25rem;
+  }
+  .back {
+    margin-top: 2rem;
+  }
+</style>

@@ -1,0 +1,32 @@
+---
+import Home from '../views/Home.astro';
+import Service from '../views/Service.astro';
+import About from '../views/About.astro';
+import Contact from '../views/Contact.astro';
+import Simple from '../views/Simple.astro';
+import { LANGS, PAGE_KEYS, SERVICE_KEYS, pathFor, type Lang, type PageKey, type ServiceKey } from '../i18n/routes';
+
+export function getStaticPaths() {
+  const paths = [];
+  for (const lang of LANGS) {
+    for (const key of PAGE_KEYS) {
+      const p = pathFor(key, lang).replace(/^\/|\/$/g, '');
+      paths.push({ params: { path: p || undefined }, props: { lang, key } });
+    }
+  }
+  return paths;
+}
+
+interface Props {
+  lang: Lang;
+  key: PageKey;
+}
+const { lang, key } = Astro.props;
+const isService = (SERVICE_KEYS as readonly string[]).includes(key);
+---
+
+{key === 'home' && <Home lang={lang} />}
+{isService && <Service lang={lang} key={key as ServiceKey} />}
+{key === 'about' && <About lang={lang} />}
+{key === 'contact' && <Contact lang={lang} />}
+{(key === 'privacy' || key === 'thanks') && <Simple lang={lang} key={key} />}

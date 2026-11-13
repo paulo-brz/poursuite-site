@@ -1,0 +1,7 @@
+---
+# Implantação pelo cPanel (Git Version Control > Gerenciar > Pull or Deploy).
+# Copia o site já gerado (pasta dist/) para public_html. Não apaga nada na pasta de destino.
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/poursu01/public_html/
+    - /bin/cp -R dist/. $DEPLOYPATH

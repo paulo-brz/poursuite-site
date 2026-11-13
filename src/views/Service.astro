@@ -1,0 +1,245 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Photo from '../components/Photo.astro';
+import { SERVICE_KEYS, pathFor, urlFor, type Lang, type ServiceKey } from '../i18n/routes';
+import { t } from '../content';
+import { breadcrumb, faqPage, service } from '../lib/schema';
+import { ARTICLES } from '../lib/articles';
+
+interface Props {
+  lang: Lang;
+  key: ServiceKey;
+}
+const { lang, key } = Astro.props;
+const c = t(lang);
+const s = c.services[key];
+const meta = c.meta[key];
+const others = SERVICE_KEYS.filter((k) => k !== key);
+const reading = lang === 'pt' ? ARTICLES.filter((a) => a.related === key) : [];
+const jsonLd = [
+  service(lang, s.h1, meta.description, urlFor(key, lang)),
+  breadcrumb([
+    { name: c.ui.home, url: urlFor('home', lang) },
+    { name: s.name, url: urlFor(key, lang) },
+  ]),
+  faqPage(s.faq),
+];
+---
+
+<Base lang={lang} title={meta.title} description={meta.description} pageKey={key} jsonLd={jsonLd}>
+  <section class="page-head">
+    <div class="wrap">
+      <Breadcrumbs label={c.ui.breadcrumb} items={[{ name: c.ui.home, href: pathFor('home', lang) }, { name: s.name }]} />
+      <div class="head-grid">
+        <div>
+          <h1>{s.h1}</h1>
+          <p class="lede">{s.lede}</p>
+          <div class="actions">
+            <a class="btn" href={pathFor('contact', lang)}>{c.ui.ctaPrimary}</a>
+          </div>
+        </div>
+        <aside class="for-whom" aria-labelledby="para-quem">
+          <h2 id="para-quem">{s.forWhomTitle}</h2>
+          <ul>
+            {s.forWhom.map((f) => <li>{f}</li>)}
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <div class="head-photo">
+    <Photo image={key} lang={lang} eager />
+  </div>
+
+  <section class="section body">
+    <div class="wrap body-grid">
+      <div class="prose">
+        {
+          s.sections.map((sec) => (
+            <>
+              <h2>{sec.h2}</h2>
+              {sec.paras?.map((p) => <p>{p}</p>)}
+              {sec.bullets && (
+                <ul>
+                  {sec.bullets.map((b) => <li>{b}</li>)}
+                </ul>
+              )}
+            </>
+          ))
+        }
+        {
+          reading.length > 0 && (
+            <div class="reading">
+              <h2>Para ler mais</h2>
+              <ul>
+                {reading.map((a) => (
+                  <li>
+                    <a href={`/conteudos/${a.slug}/`}>{a.title}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+      </div>
+      <nav class="others" aria-labelledby="outros">
+        <h2 id="outros">{c.ui.otherServices}</h2>
+        <ul>
+          {
+            others.map((k) => (
+              <li>
+                <a href={pathFor(k, lang)}>
+                  <strong>{c.services[k].name}</strong>
+                  <span>{c.services[k].summary}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+  </section>
+
+  <section class="section section--paper">
+    <div class="wrap">
+      <Faq title={c.ui.faqTitle} items={s.faq} />
+    </div>
+  </section>
+
+  <CtaBand title={s.ctaTitle} text={s.ctaText} button={c.ui.ctaPrimary} href={pathFor('contact', lang)} />
+</Base>
+
+<style>
+  .body {
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+  }
+  .page-head {
+    padding-block: clamp(2rem, 4vw, 3rem) clamp(3rem, 6vw, 4.5rem);
+  }
+  .head-photo :global(.photo--band) {
+    aspect-ratio: 16 / 5;
+    max-height: 460px;
+  }
+  .head-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: 2.5rem clamp(2.5rem, 6vw, 5rem);
+    align-items: end;
+  }
+  h1 {
+    font-size: clamp(2.1rem, 1.5rem + 2.6vw, 3.4rem);
+    max-width: 16em;
+  }
+  .lede {
+    margin-top: 1.4rem;
+  }
+  .actions {
+    margin-top: 2rem;
+  }
+  .for-whom {
+    background: var(--mist);
+    padding: 1.6rem 1.75rem;
+    border-left: 3px solid var(--teal);
+  }
+  .for-whom h2 {
+    font: 600 1rem/1.3 var(--sans);
+    margin-bottom: 0.85rem;
+  }
+  .for-whom ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .for-whom li {
+    position: relative;
+    padding-left: 1.2rem;
+    font-size: 0.98rem;
+    line-height: 1.45;
+  }
+  .for-whom li + li {
+    margin-top: 0.6rem;
+  }
+  .for-whom li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 0.45rem;
+    height: 0.45rem;
+    background: var(--teal-deep);
+  }
+  .body-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
+    gap: 3rem clamp(2.5rem, 6vw, 5rem);
+    align-items: start;
+  }
+  .reading {
+    margin-top: 3rem;
+    padding: 1.5rem 1.75rem;
+    background: var(--paper);
+  }
+  .reading h2 {
+    font: 600 1rem/1.3 var(--sans);
+    margin: 0 0 0.5rem;
+  }
+  .reading ul {
+    margin: 0;
+  }
+  .others {
+    position: sticky;
+    top: 6.5rem;
+  }
+  .others h2 {
+    font: 600 1rem/1.3 var(--sans);
+    color: var(--slate);
+    margin-bottom: 0.5rem;
+  }
+  .others ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--ink);
+  }
+  .others a {
+    display: block;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--line);
+    color: inherit;
+    text-decoration: none;
+  }
+  .others strong {
+    display: block;
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+  .others span {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.9rem;
+    color: var(--slate);
+    line-height: 1.45;
+  }
+  .others a:hover strong {
+    color: var(--teal-deep);
+  }
+  @media (max-width: 900px) {
+    .head-grid,
+    .body-grid {
+      grid-template-columns: 1fr;
+    }
+    .others {
+      position: static;
+    }
+  }
+  @media (max-width: 700px) {
+    .head-photo :global(.photo--band) {
+      aspect-ratio: 3 / 2;
+    }
+  }
+</style>

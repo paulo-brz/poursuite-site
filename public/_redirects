@@ -1,0 +1,23 @@
+# URLs do site antigo (WordPress) -> novas páginas
+/home                 /                       301
+/home/                /                       301
+/about                /quem-somos/            301
+/about/               /quem-somos/            301
+/service              /                       301
+/service/             /                       301
+/contact              /contato/               301
+/contact/             /contato/               301
+/blog                 /conteudos/             301
+/blog/                /conteudos/             301
+/sample-page          /                       301
+/sample-page/         /                       301
+/feed                 /                       301
+/feed/                /                       301
+/comments/feed/       /                       301
+/wp-sitemap.xml       /sitemap.xml            301
+/sitemap_index.xml    /sitemap.xml            301
+/wp-admin/*           /                       301
+/wp-login.php         /                       301
+/wp-content/*         /                       301
+/category/*           /conteudos/             301
+/author/*             /                       301

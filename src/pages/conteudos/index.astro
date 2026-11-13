@@ -1,0 +1,96 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Photo from '../../components/Photo.astro';
+import { ARTICLES, formatDatePt } from '../../lib/articles';
+import { SITE, pathFor } from '../../i18n/routes';
+import { breadcrumb } from '../../lib/schema';
+
+const title = 'Conteúdos: recuperação de créditos e execução | Poursuite';
+const description =
+  'Guias práticos sobre venda de créditos judiciais, localização de bens de devedores, execução e recuperação de ativos inadimplidos.';
+const jsonLd = [
+  breadcrumb([
+    { name: 'Início', url: SITE + '/' },
+    { name: 'Conteúdos', url: SITE + '/conteudos/' },
+  ]),
+];
+---
+
+<Base lang="pt" title={title} description={description} path="/conteudos/" jsonLd={jsonLd}>
+  <section class="page-head">
+    <div class="wrap">
+      <Breadcrumbs label="Você está em" items={[{ name: 'Início', href: pathFor('home', 'pt') }, { name: 'Conteúdos' }]} />
+      <h1>Conteúdos</h1>
+      <p class="lede">Guias práticos sobre crédito judicial, execução e localização de patrimônio.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap">
+      <ul class="list">
+        {
+          ARTICLES.map((a) => (
+            <li>
+              <a href={`/conteudos/${a.slug}/`}>
+                {a.image && <Photo image={a.image} lang="pt" variant="thumb" class="list__thumb" decorative />}
+                <div>
+                <time datetime={a.date}>{formatDatePt(a.date)}</time>
+                <h2>{a.title}</h2>
+                <p>{a.description}</p>
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-head {
+    padding-block: clamp(2rem, 4vw, 3rem) clamp(2.5rem, 5vw, 3.5rem);
+    border-bottom: 1px solid var(--line);
+  }
+  .page-head .lede {
+    margin-top: 1.25rem;
+  }
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 52rem;
+    border-top: 1px solid var(--ink);
+  }
+  .list a {
+    display: grid;
+    grid-template-columns: 12rem minmax(0, 1fr);
+    gap: 1.75rem;
+    align-items: start;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--line);
+    color: inherit;
+    text-decoration: none;
+  }
+  time {
+    font-size: 0.9rem;
+    color: var(--slate);
+  }
+  h2 {
+    margin-top: 0.4rem;
+    font-size: var(--step-2);
+  }
+  p {
+    margin-top: 0.6rem;
+    color: var(--ink-2);
+  }
+  @media (max-width: 600px) {
+    .list a {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+  .list a:hover h2 {
+    color: var(--teal-deep);
+  }
+</style>

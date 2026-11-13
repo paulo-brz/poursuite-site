@@ -1,0 +1,153 @@
+---
+import { LANGS, LANG_NAME, SERVICE_KEYS, pathFor, type Lang } from '../i18n/routes';
+import { t, COMPANY } from '../content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const c = t(lang);
+const ui = c.ui;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap grid">
+    <div class="col col--brand">
+      <img src="/logo-light.svg" alt="Poursuite" width="150" height="58" />
+      <p class="tagline">{ui.footerTagline}</p>
+    </div>
+
+    <nav class="col" aria-label={ui.footerServices}>
+      <h2 class="col__title">{ui.footerServices}</h2>
+      <ul>
+        {SERVICE_KEYS.map((k) => <li><a href={pathFor(k, lang)}>{c.services[k].name}</a></li>)}
+      </ul>
+    </nav>
+
+    <nav class="col" aria-label={ui.footerCompany}>
+      <h2 class="col__title">{ui.footerCompany}</h2>
+      <ul>
+        <li><a href={pathFor('about', lang)}>{ui.about}</a></li>
+        {ui.insights && <li><a href="/conteudos/">{ui.insights}</a></li>}
+        <li><a href={pathFor('contact', lang)}>{ui.contact}</a></li>
+        <li><a href={pathFor('privacy', lang)}>{ui.privacy}</a></li>
+      </ul>
+    </nav>
+
+    <div class="col">
+      <h2 class="col__title">{ui.footerContact}</h2>
+      <p>
+        <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a>
+      </p>
+      <address>
+        {COMPANY.street}<br />
+        {COMPANY.district}, {COMPANY.city}/{COMPANY.region}<br />
+        CEP {COMPANY.postalCode}
+      </address>
+    </div>
+  </div>
+
+  <div class="wrap"><div class="legal">
+    <ul class="langs" aria-label={ui.language}>
+      {
+        LANGS.map((l) => (
+          <li>
+            <a href={pathFor('home', l)} hreflang={l} lang={l} aria-current={l === lang ? 'true' : undefined}>
+              {LANG_NAME[l]}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p>{ui.notLawFirm}</p>
+    <p>
+      © {year} {ui.legalName}, {ui.cnpj}. {ui.rights}
+    </p>
+  </div></div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--ink);
+    color: #b9c6c4;
+    font-size: 0.95rem;
+    padding-top: clamp(3.5rem, 7vw, 5rem);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1.2fr 1fr 1.2fr;
+    gap: 2.5rem;
+  }
+  .col--brand img {
+    width: 150px;
+    height: auto;
+  }
+  .tagline {
+    margin-top: 1.25rem;
+    max-width: 18rem;
+    color: #d9e3e1;
+  }
+  .col__title {
+    font: 600 0.95rem/1.3 var(--sans);
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  li + li {
+    margin-top: 0.55rem;
+  }
+  a {
+    color: #b9c6c4;
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--white);
+    text-decoration: underline;
+  }
+  address {
+    font-style: normal;
+    margin-top: 0.9rem;
+    line-height: 1.55;
+  }
+  .legal {
+    margin-top: 3.5rem;
+    padding-top: 1.5rem;
+    padding-bottom: 2.25rem;
+    border-top: 1px solid var(--line-dark);
+    font-size: 0.85rem;
+    color: #8e9d9b;
+  }
+  .legal p + p {
+    margin-top: 0.4rem;
+  }
+  .langs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .langs li + li {
+    margin-top: 0;
+  }
+  .langs a[aria-current] {
+    color: var(--teal);
+  }
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .col--brand {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 520px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,65 @@
+---
+import type { Lang } from '../i18n/routes';
+import { ALT, type ImageKey } from '../content/images';
+
+interface Props {
+  image: ImageKey;
+  lang: Lang;
+  /** band: faixa larga (1600x600); thumb: miniatura 3:2 */
+  variant?: 'band' | 'thumb';
+  eager?: boolean;
+  class?: string;
+  sizes?: string;
+  decorative?: boolean;
+}
+const { image, lang, variant = 'band', eager = false, class: cls, sizes, decorative = false } = Astro.props;
+const alt = decorative ? '' : ALT[lang][image];
+---
+
+{
+  variant === 'band' ? (
+    <img
+      class:list={['photo', 'photo--band', cls]}
+      src={`/img/${image}-1600.webp`}
+      srcset={`/img/${image}-800.webp 800w, /img/${image}-1600.webp 1600w`}
+      sizes={sizes ?? '100vw'}
+      width="1600"
+      height="600"
+      alt={alt}
+      loading={eager ? 'eager' : 'lazy'}
+      decoding="async"
+      fetchpriority={eager ? 'high' : undefined}
+    />
+  ) : (
+    <img
+      class:list={['photo', 'photo--thumb', cls]}
+      src={`/img/${image}-thumb.webp`}
+      width="480"
+      height="320"
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+    />
+  )
+}
+
+<style>
+  .photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    background: var(--mist);
+  }
+  .photo--band {
+    aspect-ratio: 16 / 6;
+  }
+  .photo--thumb {
+    aspect-ratio: 3 / 2;
+  }
+  @media (max-width: 700px) {
+    .photo--band {
+      aspect-ratio: 4 / 3;
+    }
+  }
+</style>

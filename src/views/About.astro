@@ -1,0 +1,131 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Photo from '../components/Photo.astro';
+import { pathFor, urlFor, type Lang } from '../i18n/routes';
+import { t } from '../content';
+import { breadcrumb, organization } from '../lib/schema';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const c = t(lang);
+const a = c.about;
+const meta = c.meta.about;
+const jsonLd = [
+  organization(lang, meta.description),
+  breadcrumb([
+    { name: c.ui.home, url: urlFor('home', lang) },
+    { name: a.h1, url: urlFor('about', lang) },
+  ]),
+];
+---
+
+<Base lang={lang} title={meta.title} description={meta.description} pageKey="about" jsonLd={jsonLd}>
+  <section class="page-head">
+    <div class="wrap">
+      <Breadcrumbs label={c.ui.breadcrumb} items={[{ name: c.ui.home, href: pathFor('home', lang) }, { name: a.h1 }]} />
+      <h1>{a.h1}</h1>
+      <p class="lede">{a.lede}</p>
+    </div>
+  </section>
+
+  <div class="head-photo">
+    <Photo image="about" lang={lang} eager />
+  </div>
+
+  <section class="section">
+    <div class="wrap about-grid">
+      {
+        a.sections.map((s) => (
+          <div class="about-block">
+            <h2>{s.h2}</h2>
+            <div class="about-text">
+              {s.paras?.map((p) => <p>{p}</p>)}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section section--paper">
+    <div class="wrap">
+      <h2>{a.principlesTitle}</h2>
+      <dl class="principles">
+        {
+          a.principles.map((p) => (
+            <div>
+              <dt>{p.title}</dt>
+              <dd>{p.text}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <CtaBand title={c.home.finalTitle} text={c.home.finalText} button={c.ui.ctaPrimary} href={pathFor('contact', lang)} />
+</Base>
+
+<style>
+  .page-head {
+    padding-block: clamp(2rem, 4vw, 3rem) clamp(3rem, 6vw, 4.5rem);
+  }
+  .head-photo :global(.photo--band) {
+    aspect-ratio: 16 / 5;
+    max-height: 460px;
+  }
+  .page-head .lede {
+    margin-top: 1.4rem;
+  }
+  .about-grid {
+    display: grid;
+    gap: clamp(3rem, 6vw, 4.5rem);
+  }
+  .about-block {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.75fr);
+    gap: 1.25rem clamp(2.5rem, 7vw, 6rem);
+  }
+  .about-block h2 {
+    font-size: var(--step-2);
+  }
+  .about-text {
+    max-width: 40rem;
+    font-size: 1.08rem;
+    color: var(--ink-2);
+  }
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+    margin: 2.5rem 0 0;
+  }
+  .principles > div {
+    border-top: 2px solid var(--ink);
+    padding-top: 1.1rem;
+  }
+  dt {
+    font-family: var(--serif);
+    font-size: var(--step-2);
+    font-weight: 600;
+  }
+  dd {
+    margin: 0.6rem 0 0;
+    color: var(--ink-2);
+  }
+  @media (max-width: 860px) {
+    .about-block,
+    .principles {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 700px) {
+    .head-photo :global(.photo--band) {
+      aspect-ratio: 3 / 2;
+    }
+  }
+</style>

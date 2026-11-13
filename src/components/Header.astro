@@ -1,0 +1,320 @@
+---
+import { LANGS, LANG_NAME, SERVICE_KEYS, pathFor, type Lang, type PageKey } from '../i18n/routes';
+import { t } from '../content';
+
+interface Props {
+  lang: Lang;
+  pageKey?: PageKey;
+}
+const { lang, pageKey } = Astro.props;
+const c = t(lang);
+const ui = c.ui;
+const current = Astro.url.pathname;
+const isActive = (p: string) => current === p;
+const servicePaths = SERVICE_KEYS.map((k) => pathFor(k, lang));
+const inServices = servicePaths.includes(current);
+---
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href={pathFor('home', lang)} aria-label="Poursuite, {ui.home}">
+      <img src="/logo-dark.svg" alt="Poursuite" width="150" height="58" />
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="nav-toggle__bars" aria-hidden="true"></span>
+      <span class="nav-toggle__label">{ui.menu}</span>
+    </button>
+
+    <nav id="site-nav" class="nav" aria-label={ui.menu}>
+      <ul class="nav__list">
+        <li class="nav__item nav__item--services">
+          <details class="dropdown">
+            <summary class:list={['nav__link', { 'is-active': inServices }]}>{ui.services}</summary>
+            <ul class="dropdown__panel">
+              {
+                SERVICE_KEYS.map((k) => (
+                  <li>
+                    <a href={pathFor(k, lang)} aria-current={isActive(pathFor(k, lang)) ? 'page' : undefined}>
+                      <strong>{c.services[k].name}</strong>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </details>
+        </li>
+        <li class="nav__item">
+          <a class:list={['nav__link', { 'is-active': isActive(pathFor('about', lang)) }]} href={pathFor('about', lang)}>
+            {ui.about}
+          </a>
+        </li>
+        {
+          ui.insights && (
+            <li class="nav__item">
+              <a class:list={['nav__link', { 'is-active': current.startsWith('/conteudos/') }]} href="/conteudos/">
+                {ui.insights}
+              </a>
+            </li>
+          )
+        }
+        <li class="nav__item nav__item--cta">
+          <a class="btn nav__cta" href={pathFor('contact', lang)}>{ui.contact}</a>
+        </li>
+        <li class="nav__item nav__item--lang">
+          <details class="dropdown dropdown--lang">
+            <summary class="nav__link" aria-label={ui.language}>
+              <span lang={lang}>{lang.toUpperCase()}</span>
+            </summary>
+            <ul class="dropdown__panel" role="list">
+              {
+                LANGS.map((l) => (
+                  <li>
+                    <a
+                      href={pathFor(pageKey ?? 'home', l)}
+                      hreflang={l}
+                      lang={l}
+                      aria-current={l === lang ? 'true' : undefined}
+                    >
+                      {LANG_NAME[l]}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </details>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
+  const nav = document.getElementById('site-nav');
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    nav?.classList.toggle('is-open', !open);
+  });
+  const dropdowns = document.querySelectorAll<HTMLDetailsElement>('.dropdown');
+  document.addEventListener('click', (e) => {
+    dropdowns.forEach((d) => {
+      if (!d.contains(e.target as Node)) d.open = false;
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') dropdowns.forEach((d) => (d.open = false));
+  });
+  dropdowns.forEach((d) =>
+    d.addEventListener('toggle', () => {
+      if (d.open) dropdowns.forEach((o) => o !== d && (o.open = false));
+    })
+  );
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: saturate(1.4) blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    min-height: 4.5rem;
+  }
+  .brand img {
+    width: 132px;
+    height: auto;
+  }
+  .nav__list {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nav__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.6rem 0.8rem;
+    color: var(--ink);
+    font-weight: 500;
+    font-size: 0.98rem;
+    text-decoration: none;
+    cursor: pointer;
+    list-style: none;
+    border-radius: 2px;
+  }
+  summary.nav__link::-webkit-details-marker {
+    display: none;
+  }
+  summary.nav__link::after {
+    content: '';
+    width: 0.42em;
+    height: 0.42em;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: translateY(-0.15em) rotate(45deg);
+    transition: transform 0.15s;
+  }
+  details[open] > summary.nav__link::after {
+    transform: translateY(0.1em) rotate(-135deg);
+  }
+  .nav__link:hover {
+    color: var(--teal-deep);
+  }
+  .nav__link.is-active {
+    color: var(--teal-deep);
+    box-shadow: inset 0 -2px 0 var(--teal);
+  }
+  .nav__item--cta {
+    margin-left: 0.75rem;
+  }
+  .nav__cta {
+    min-height: 2.6rem;
+    padding: 0.5rem 1.1rem;
+  }
+  .dropdown {
+    position: relative;
+  }
+  .dropdown__panel {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    min-width: 17rem;
+    margin: 0;
+    padding: 0.5rem;
+    list-style: none;
+    background: var(--white);
+    border: 1px solid var(--line);
+    box-shadow: 0 18px 40px -18px rgba(20, 27, 29, 0.35);
+  }
+  .dropdown--lang .dropdown__panel {
+    left: auto;
+    right: 0;
+    min-width: 10rem;
+  }
+  .dropdown__panel a {
+    display: block;
+    padding: 0.6rem 0.75rem;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .dropdown__panel strong {
+    font-weight: 500;
+  }
+  .dropdown__panel a:hover,
+  .dropdown__panel a[aria-current] {
+    background: var(--mist);
+    color: var(--teal-deep);
+  }
+  .nav-toggle {
+    display: none;
+  }
+
+  @media (max-width: 920px) {
+    .nav-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.5rem 0.25rem;
+      border: 0;
+      background: none;
+      font: 600 0.95rem var(--sans);
+      color: var(--ink);
+      cursor: pointer;
+    }
+    .nav-toggle__bars,
+    .nav-toggle__bars::before,
+    .nav-toggle__bars::after {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: currentColor;
+      position: relative;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+    .nav-toggle__bars::before,
+    .nav-toggle__bars::after {
+      content: '';
+      position: absolute;
+      left: 0;
+    }
+    .nav-toggle__bars::before {
+      top: -6px;
+    }
+    .nav-toggle__bars::after {
+      top: 6px;
+    }
+    .nav-toggle[aria-expanded='true'] .nav-toggle__bars {
+      background: transparent;
+    }
+    .nav-toggle[aria-expanded='true'] .nav-toggle__bars::before {
+      transform: translateY(6px) rotate(45deg);
+    }
+    .nav-toggle[aria-expanded='true'] .nav-toggle__bars::after {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+    .nav {
+      display: none;
+      position: absolute;
+      inset: 100% 0 auto 0;
+      background: var(--white);
+      border-bottom: 1px solid var(--line);
+      padding: 0.5rem var(--gutter) 1.5rem;
+      max-height: calc(100vh - 4.5rem);
+      overflow-y: auto;
+    }
+    .nav.is-open {
+      display: block;
+    }
+    .nav__list {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+    }
+    .nav__item {
+      border-bottom: 1px solid var(--line);
+    }
+    .nav__link {
+      width: 100%;
+      padding: 0.95rem 0;
+      font-size: 1.05rem;
+      justify-content: space-between;
+    }
+    .nav__link.is-active {
+      box-shadow: none;
+    }
+    .dropdown__panel {
+      position: static;
+      box-shadow: none;
+      border: 0;
+      padding: 0 0 0.75rem;
+      min-width: 0;
+    }
+    .dropdown__panel a {
+      padding: 0.55rem 0.75rem;
+    }
+    .nav__item--cta {
+      order: 10;
+      margin: 1.25rem 0 0;
+      border: 0;
+    }
+    .nav__cta {
+      width: 100%;
+    }
+    .nav__item--lang .dropdown__panel {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+    }
+  }
+</style>

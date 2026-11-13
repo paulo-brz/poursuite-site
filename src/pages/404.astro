@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import { LANGS, LANG_NAME, pathFor } from '../i18n/routes';
+import { t } from '../content';
+const c = t('pt');
+---
+
+<Base lang="pt" title={`${c.notFound.title} | Poursuite`} description={c.notFound.text} path="/404/" noindex>
+  <section class="section nf">
+    <div class="wrap">
+      <h1>{c.notFound.title}</h1>
+      <p class="lede">{c.notFound.text}</p>
+      <p class="actions"><a class="btn" href="/">{c.notFound.back}</a></p>
+      <ul class="langs">
+        {
+          LANGS.filter((l) => l !== 'pt').map((l) => (
+            <li lang={l}>
+              {t(l).notFound.title}: <a href={pathFor('home', l)}>{LANG_NAME[l]}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    min-height: 55vh;
+  }
+  .lede {
+    margin-top: 1.25rem;
+  }
+  .actions {
+    margin-top: 2rem;
+  }
+  .langs {
+    margin-top: 3rem;
+    padding: 0;
+    list-style: none;
+    color: var(--slate);
+    font-size: 0.95rem;
+  }
+  .langs li + li {
+    margin-top: 0.35rem;
+  }
+</style>

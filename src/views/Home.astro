@@ -1,0 +1,541 @@
+---
+import Base from '../layouts/Base.astro';
+import TrailDiagram from '../components/TrailDiagram.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Photo from '../components/Photo.astro';
+import { LANGS, LANG_NAME, SERVICE_KEYS, pathFor, type Lang } from '../i18n/routes';
+import { t } from '../content';
+import { organization, website, faqPage } from '../lib/schema';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const c = t(lang);
+const h = c.home;
+const meta = c.meta.home;
+const jsonLd = [organization(lang, meta.description), website(lang), faqPage(h.faq)];
+
+// Rede de pontos decorativa do fundo do topo (determinística, gerada no build)
+let seed = 7;
+const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+const pts = Array.from({ length: 46 }, () => ({ x: rnd() * 1600, y: rnd() * 800 }));
+const links: [number, number, number, number][] = [];
+pts.forEach((a, i) => {
+  pts.slice(i + 1).forEach((b) => {
+    const d = Math.hypot(a.x - b.x, a.y - b.y);
+    if (d < 190) links.push([a.x, a.y, b.x, b.y]);
+  });
+});
+---
+
+<Base lang={lang} title={meta.title} description={meta.description} pageKey="home" jsonLd={jsonLd}>
+  <section class="hero">
+    <div class="hero__bg" aria-hidden="true">
+      <svg class="hero__net" viewBox="0 0 1600 800" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <g class="hero__links">
+          {links.map(([x1, y1, x2, y2]) => <line x1={x1.toFixed(0)} y1={y1.toFixed(0)} x2={x2.toFixed(0)} y2={y2.toFixed(0)} />)}
+        </g>
+        <g class="hero__pts">
+          {pts.map((p, i) => <circle cx={p.x.toFixed(0)} cy={p.y.toFixed(0)} r={i % 7 === 0 ? 2.6 : 1.6} class={i % 7 === 0 ? 'is-hot' : undefined} style={`--d:${(i % 5) * 0.8}s`} />)}
+        </g>
+      </svg>
+    </div>
+    <div class="wrap hero__grid">
+      <div class="hero__text">
+        <h1>{h.h1}</h1>
+        <p class="lede">{h.lede}</p>
+        <div class="actions">
+          <a class="btn" href={pathFor('contact', lang)}>{c.ui.ctaPrimary}</a>
+          <a class="link-strong" href="#como-trabalhamos">{c.ui.ctaSecondary}</a>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <TrailDiagram trail={h.trail} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--paper" aria-labelledby="servicos">
+    <div class="wrap split">
+      <div class="split__head">
+        <h2 id="servicos">{h.servicesTitle}</h2>
+        <p class="muted">{h.servicesIntro}</p>
+      </div>
+      <ul class="services">
+        {
+          SERVICE_KEYS.map((k) => (
+            <li>
+              <a class="service" href={pathFor(k, lang)}>
+                <Photo image={k} lang={lang} variant="thumb" class="service__thumb" decorative />
+                <h3 class="service__name">{c.services[k].name}</h3>
+                <p class="service__summary">{c.services[k].summary}</p>
+                <span class="service__more">{c.ui.readMore}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--mist insight" aria-labelledby="insight">
+    <div class="wrap split">
+      <h2 id="insight" class="insight__title">{h.insightTitle}</h2>
+      <div class="insight__text">
+        {h.insightText.map((p) => <p>{p}</p>)}
+        <p><a class="link-strong" href={pathFor('investigation', lang)}>{c.services.investigation.name}</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="publico">
+    <div class="wrap">
+      <h2 id="publico">{h.audienceTitle}</h2>
+      <ul class="audience">
+        {
+          h.audience.map((a) => (
+            <li>
+              <h3>{a.title}</h3>
+              <p class="muted">{a.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--paper" id="como-trabalhamos" aria-labelledby="metodo">
+    <div class="wrap">
+      <div class="method__head">
+        <h2 id="metodo">{h.methodTitle}</h2>
+        <p class="lede">{h.methodIntro}</p>
+      </div>
+      <ol class="steps">
+        {
+          h.steps.map((s) => (
+            <li>
+              <h3>{s.title}</h3>
+              <p class="muted">{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--ink intl" aria-labelledby="internacional">
+    <div class="intl__bg" aria-hidden="true">
+      <Photo image="foreign" lang={lang} decorative />
+    </div>
+    <div class="wrap split intl__content">
+      <div>
+        <h2 id="internacional">{h.internationalTitle}</h2>
+        <p class="intl__text">{h.internationalText}</p>
+        <p><a class="link-strong intl__link" href={pathFor('foreign', lang)}>{h.internationalLink}</a></p>
+      </div>
+      <ul class="intl__langs">
+        {
+          LANGS.map((l) => (
+            <li>
+              <a href={pathFor('foreign', l)} hreflang={l} lang={l}>
+                <span class="intl__code">{l.toUpperCase()}</span>
+                <span>{LANG_NAME[l]}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <Faq title={c.ui.faqTitle} items={h.faq} />
+    </div>
+  </section>
+
+  <CtaBand title={h.finalTitle} text={h.finalText} button={c.ui.ctaPrimary} href={pathFor('contact', lang)} />
+</Base>
+
+<style>
+  .hero {
+    position: relative;
+    padding-block: clamp(3.5rem, 7vw, 6rem) clamp(4rem, 8vw, 6.5rem);
+    overflow: hidden;
+    color: #e9efee;
+    background:
+      radial-gradient(60rem 36rem at 82% 30%, rgba(67, 163, 154, 0.26), transparent 62%),
+      radial-gradient(40rem 30rem at 8% 105%, rgba(30, 106, 99, 0.35), transparent 70%),
+      linear-gradient(160deg, #18272a 0%, #121b1d 55%, #0e1517 100%);
+  }
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .hero__bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(143, 211, 203, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(143, 211, 203, 0.07) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(ellipse 75% 85% at 70% 45%, #000 20%, transparent 75%);
+    mask-image: radial-gradient(ellipse 75% 85% at 70% 45%, #000 20%, transparent 75%);
+  }
+  .hero__net {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.35) 35%, #000 70%);
+    mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.35) 35%, #000 70%);
+  }
+  .hero__links line {
+    stroke: rgba(143, 211, 203, 0.16);
+    stroke-width: 1;
+  }
+  .hero__pts circle {
+    fill: rgba(143, 211, 203, 0.45);
+  }
+  .hero__pts circle.is-hot {
+    fill: #5fc2b8;
+    animation: blink 4s ease-in-out infinite;
+    animation-delay: var(--d);
+  }
+  @keyframes blink {
+    0%,
+    100% {
+      opacity: 0.35;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  .hero__grid {
+    position: relative;
+  }
+  .hero h1 {
+    color: var(--white);
+  }
+  .hero .lede {
+    color: #c3d0ce;
+  }
+  .hero .btn {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: var(--ink);
+  }
+  .hero .btn:hover {
+    background: var(--white);
+    border-color: var(--white);
+    color: var(--ink);
+  }
+  .hero .link-strong {
+    color: var(--white);
+  }
+  .hero .link-strong:hover {
+    color: #8fd3cb;
+  }
+  .hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: center;
+  }
+  .hero h1 {
+    max-width: 11em;
+  }
+  .hero .lede {
+    margin-top: 1.5rem;
+    max-width: 30em;
+  }
+  .hero .actions {
+    margin-top: 2.25rem;
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.75fr);
+    gap: 2.5rem clamp(2.5rem, 7vw, 6rem);
+    align-items: start;
+  }
+  .split__head {
+    position: sticky;
+    top: 7rem;
+  }
+  .split__head p {
+    margin-top: 1.1rem;
+    max-width: 26rem;
+  }
+
+  .services {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--ink);
+  }
+  .city :global(.photo--band) {
+    aspect-ratio: 16 / 5;
+    max-height: 520px;
+  }
+  .service {
+    display: grid;
+    grid-template-columns: 9.5rem minmax(0, 1fr) auto;
+    gap: 0.4rem 1.75rem;
+    padding: 1.6rem 0 1.6rem 0;
+    border-bottom: 1px solid var(--line);
+    color: inherit;
+    text-decoration: none;
+    transition: padding-left 0.2s ease, background-color 0.2s;
+  }
+  .service__name {
+    font-family: var(--serif);
+    font-size: var(--step-2);
+    font-weight: 600;
+    line-height: 1.15;
+  }
+  .service :global(.service__thumb) {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    align-self: start;
+    filter: saturate(0.85);
+    transition: filter 0.2s;
+  }
+  .service:hover :global(.service__thumb) {
+    filter: saturate(1.05);
+  }
+  .service__name {
+    grid-column: 2;
+  }
+  .service__summary {
+    grid-column: 2;
+    color: var(--ink-2);
+    max-width: 36rem;
+  }
+  .service__more {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    align-self: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--teal-deep);
+    text-decoration: underline;
+    text-decoration-color: var(--teal);
+    text-underline-offset: 0.2em;
+  }
+  .service:hover {
+    padding-left: 1rem;
+    background: var(--white);
+  }
+  .service:hover .service__name {
+    color: var(--teal-deep);
+  }
+
+  .insight__title {
+    font-size: clamp(2rem, 1.5rem + 2.2vw, 3rem);
+    line-height: 1.08;
+  }
+  .insight__text {
+    font-size: var(--step-1);
+    line-height: 1.6;
+    max-width: 38rem;
+    color: var(--ink-2);
+  }
+  .insight__text p:last-child {
+    margin-top: 1.75rem;
+    font-size: 1rem;
+  }
+
+  .audience {
+    list-style: none;
+    margin: 2.5rem 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2rem;
+  }
+  .audience li {
+    border-top: 2px solid var(--ink);
+    padding-top: 1.1rem;
+  }
+  .audience h3 {
+    font-size: 1.1rem;
+  }
+  .audience p {
+    margin-top: 0.6rem;
+    font-size: 0.98rem;
+  }
+
+  .method__head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.75fr);
+    gap: 1.5rem clamp(2.5rem, 7vw, 6rem);
+    align-items: end;
+  }
+  .steps {
+    list-style: none;
+    counter-reset: step;
+    margin: 3rem 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+  }
+  .steps li {
+    counter-increment: step;
+    position: relative;
+    padding: 0 1.75rem 0 0;
+  }
+  .steps li::before {
+    content: counter(step);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    margin-bottom: 1.25rem;
+    border: 1.5px solid var(--teal-deep);
+    border-radius: 50%;
+    background: var(--paper);
+    font: 600 1.15rem/1 var(--serif);
+    color: var(--teal-deep);
+    position: relative;
+    z-index: 1;
+  }
+  .steps li::after {
+    content: '';
+    position: absolute;
+    top: 1.3rem;
+    left: 2.6rem;
+    right: 0;
+    border-top: 1.5px solid var(--line);
+  }
+  .steps li:last-child::after {
+    display: none;
+  }
+  .steps p {
+    margin-top: 0.6rem;
+    font-size: 0.98rem;
+  }
+
+  .intl {
+    position: relative;
+    overflow: hidden;
+  }
+  .intl__bg {
+    position: absolute;
+    inset: 0;
+  }
+  .intl__bg :global(.photo) {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    object-position: 85% 50%;
+  }
+  .intl__bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(20, 27, 29, 0.97) 0%, rgba(20, 27, 29, 0.9) 40%, rgba(20, 27, 29, 0.62) 100%);
+  }
+  .intl__content {
+    position: relative;
+  }
+  .intl h2 {
+    color: var(--white);
+  }
+  .intl__text {
+    margin-top: 1.1rem;
+    font-size: var(--step-1);
+    color: #c7d3d1;
+    max-width: 32rem;
+  }
+  .intl p + p {
+    margin-top: 1.75rem;
+  }
+  .intl__link.link-strong {
+    color: var(--white);
+  }
+  .intl__langs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line-dark);
+  }
+  .intl__langs a {
+    display: flex;
+    align-items: baseline;
+    gap: 1.25rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--line-dark);
+    color: #e9efee;
+    text-decoration: none;
+    font-family: var(--serif);
+    font-size: var(--step-2);
+  }
+  .intl__code {
+    font: 600 0.85rem var(--sans);
+    color: var(--teal);
+    width: 2rem;
+  }
+  .intl__langs a:hover {
+    color: var(--teal);
+  }
+
+  @media (max-width: 980px) {
+    .hero__grid,
+    .split,
+    .method__head {
+      grid-template-columns: 1fr;
+    }
+    .hero__visual {
+      max-width: 620px;
+    }
+    .split__head {
+      position: static;
+    }
+    .audience,
+    .steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      row-gap: 2.5rem;
+    }
+    .steps li:nth-child(2)::after {
+      display: none;
+    }
+  }
+  @media (max-width: 560px) {
+    .audience,
+    .steps {
+      grid-template-columns: 1fr;
+    }
+    .steps li::after {
+      display: none;
+    }
+    .service {
+      grid-template-columns: 5.5rem minmax(0, 1fr);
+      column-gap: 1rem;
+    }
+    .service__name {
+      font-size: 1.3rem;
+    }
+    .service__summary {
+      grid-column: 1 / -1;
+    }
+    .service__more {
+      grid-column: 1 / -1;
+      grid-row: auto;
+    }
+    .service :global(.service__thumb) {
+      grid-row: 1;
+    }
+  }
+  @media (max-width: 700px) {
+    .city :global(.photo--band) {
+      aspect-ratio: 3 / 2;
+    }
+  }
+</style>

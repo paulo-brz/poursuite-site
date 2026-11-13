@@ -1,0 +1,77 @@
+---
+import type { Faq } from '../content/types';
+interface Props {
+  title: string;
+  items: Faq[];
+}
+const { title, items } = Astro.props;
+---
+
+<div class="faq">
+  <h2>{title}</h2>
+  <div class="faq__list">
+    {
+      items.map((f) => (
+        <details class="faq__item">
+          <summary>
+            <h3>{f.q}</h3>
+          </summary>
+          <p>{f.a}</p>
+        </details>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .faq {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: 2rem clamp(2rem, 6vw, 5rem);
+  }
+  .faq__list {
+    border-top: 1px solid var(--ink);
+  }
+  .faq__item {
+    border-bottom: 1px solid var(--line);
+  }
+  summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 1.2rem 0;
+    cursor: pointer;
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  summary::after {
+    content: '+';
+    flex: none;
+    font: 400 1.5rem/1 var(--sans);
+    color: var(--teal-deep);
+    transition: transform 0.2s;
+  }
+  details[open] summary::after {
+    transform: rotate(45deg);
+  }
+  summary:hover h3 {
+    color: var(--teal-deep);
+  }
+  .faq__item p {
+    padding: 0 2.5rem 1.4rem 0;
+    color: var(--ink-2);
+    max-width: 44rem;
+  }
+  @media (max-width: 800px) {
+    .faq {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

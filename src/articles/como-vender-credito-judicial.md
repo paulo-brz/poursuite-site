@@ -40,7 +40,7 @@ O valor pago por um crédito judicial é sempre inferior ao seu valor de face, p
 - **Existem garantias ou coobrigados?** Avalistas, fiadores e garantias reais aumentam a chance de recebimento.
 - **Quanto tempo deve levar?** O custo do dinheiro no tempo entra na conta.
 
-É por isso que a investigação patrimonial vem antes da proposta. Muitas vezes, o devedor que parece não ter nada é sócio de uma empresa, herdeiro em um inventário ou credor em outro processo, e isso muda o preço.
+É por isso que a investigação patrimonial vem antes da proposta. Muitas vezes, o devedor que parece não ter nada é sócio de uma empresa ou herdeiro em um inventário, e isso muda o preço.
 
 ## Documentos normalmente necessários
 

@@ -48,7 +48,7 @@ const pt: Content = {
     investigation: {
       title: 'Investigação patrimonial e localização de bens | Poursuite',
       description:
-        'Localizamos imóveis, participações societárias, veículos e créditos do devedor em outros processos, e identificamos fraudes e blindagem patrimonial.',
+        'Localizamos imóveis, participações societárias, veículos e outros bens de devedores, e identificamos fraudes e blindagem patrimonial.',
     },
     duediligence: {
       title: 'Due diligence e precificação de carteiras de crédito | Poursuite',
@@ -91,7 +91,7 @@ const pt: Content = {
       debtor: 'Devedor',
       debtorDetail: 'Nenhum bem em nome próprio',
       nodes: [
-        { label: 'Crédito em outro processo', detail: 'Penhora no rosto dos autos' },
+        { label: 'Empresa ligada ao devedor', detail: 'Grupo econômico' },
         { label: 'Quotas de holding familiar', detail: 'Desconsideração inversa' },
         { label: 'Imóvel em nome de terceiro', detail: 'Fraude à execução' },
         { label: 'Herança não partilhada', detail: 'Penhora do quinhão' },
@@ -130,7 +130,7 @@ const pt: Content = {
       },
       {
         title: 'Investigação patrimonial',
-        text: 'Pesquisamos bens, empresas, participações, créditos em outras ações e movimentações suspeitas do devedor e de pessoas ligadas a ele.',
+        text: 'Pesquisamos bens, empresas, participações e movimentações suspeitas do devedor e de pessoas ligadas a ele.',
       },
       {
         title: 'Proposta',
@@ -263,7 +263,7 @@ const pt: Content = {
           h2: 'Por que tantas execuções param',
           paras: [
             'A maior parte das execuções não termina por falta de direito, e sim por falta de informação. Depois das pesquisas automáticas (bloqueio de contas, veículos e declarações de renda), muitos processos são suspensos e caminham para a prescrição intercorrente (art. 921 do CPC).',
-            'O patrimônio, porém, raramente desaparece. Ele costuma estar em uma empresa da família, em nome de parentes, em um crédito que o devedor tem a receber em outra ação ou em uma herança ainda não partilhada.',
+            'O patrimônio, porém, raramente desaparece. Ele costuma estar em uma empresa da família, em nome de parentes ou em uma herança ainda não partilhada.',
           ],
         },
         {
@@ -271,7 +271,6 @@ const pt: Content = {
           bullets: [
             'Revisão do processo e do histórico de tentativas de penhora',
             'Investigação patrimonial do devedor, de sócios e de pessoas e empresas ligadas',
-            'Busca de créditos do devedor em outros processos, para penhora no rosto dos autos (art. 860 do CPC)',
             'Identificação de fraude à execução, fraude contra credores e uso abusivo de pessoa jurídica',
             'Estratégia de medidas judiciais junto aos advogados do caso, incluindo o incidente de desconsideração da personalidade jurídica (arts. 133 a 137 do CPC)',
             'Relatórios periódicos com cada andamento e próxima medida',
@@ -306,7 +305,7 @@ const pt: Content = {
     investigation: {
       name: 'Investigação patrimonial',
       summary:
-        'Localizamos imóveis, empresas, participações, veículos e créditos do devedor, e identificamos blindagem patrimonial e fraudes.',
+        'Localizamos imóveis, empresas, participações e veículos do devedor, e identificamos blindagem patrimonial e fraudes.',
       h1: 'Investigação patrimonial e localização de bens de devedores',
       lede:
         'Antes de cobrar, comprar ou vender uma dívida, é preciso saber o que o devedor tem e onde está. Fazemos investigação patrimonial de pessoas e empresas para credores, advogados e investidores.',
@@ -323,7 +322,6 @@ const pt: Content = {
           bullets: [
             'Imóveis em nome do devedor, de cônjuges, parentes e empresas ligadas',
             'Participações societárias, holdings familiares e alterações contratuais recentes',
-            'Créditos a receber em outros processos, inventários e arrematações',
             'Veículos, embarcações e aeronaves',
             'Vínculos entre pessoas e empresas que indiquem grupo econômico ou interposição de terceiros',
             'Transferências e operações que possam caracterizar fraude à execução ou contra credores',

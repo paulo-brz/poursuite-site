@@ -90,7 +90,7 @@ const en: Content = {
       debtor: 'Debtor',
       debtorDetail: 'Nothing registered in their name',
       nodes: [
-        { label: 'Award in another lawsuit', detail: 'Attachment of the award' },
+        { label: 'Company linked to the debtor', detail: 'Economic group' },
         { label: 'Family holding company shares', detail: 'Reverse veil piercing' },
         { label: 'Property in a relative’s name', detail: 'Fraudulent transfer' },
         { label: 'Undivided inheritance', detail: 'Attachment of the heir’s share' },
@@ -129,7 +129,7 @@ const en: Content = {
       },
       {
         title: 'Asset tracing',
-        text: 'We search for property, companies, shareholdings, receivables in other lawsuits and suspicious transfers by the debtor and related parties.',
+        text: 'We search for property, companies, shareholdings and suspicious transfers by the debtor and related parties.',
       },
       {
         title: 'Proposal',
@@ -261,7 +261,7 @@ const en: Content = {
           h2: 'Why so many enforcement cases stall in Brazil',
           paras: [
             'Most enforcement proceedings do not fail for lack of rights, but for lack of information. After the automated searches (bank account freezes, vehicle registry and tax return queries), many cases are suspended and drift towards intercurrent limitation (art. 921 of the Code of Civil Procedure).',
-            'The assets, however, rarely vanish. They tend to sit in a family company, in relatives’ names, in money the debtor is owed in another lawsuit, or in an inheritance that has not yet been divided.',
+            'The assets, however, rarely vanish. They tend to sit in a family company, in relatives’ names or in an inheritance that has not yet been divided.',
           ],
         },
         {
@@ -269,7 +269,6 @@ const en: Content = {
           bullets: [
             'Review of the case file and of previous attachment attempts',
             'Asset tracing on the debtor, partners and related people and companies',
-            'Search for awards owed to the debtor in other lawsuits, which can be attached (art. 860 of the Code of Civil Procedure)',
             'Identification of fraudulent transfers and abuse of corporate structures',
             'Litigation strategy with the attorneys on the case, including veil-piercing incidents (arts. 133 to 137 of the Code of Civil Procedure)',
             'Regular reports on each step and the next action',
@@ -321,7 +320,6 @@ const en: Content = {
           bullets: [
             'Real estate held by the debtor, spouses, relatives and related companies',
             'Shareholdings, family holding companies and recent corporate changes',
-            'Receivables in other lawsuits, probate proceedings and judicial auctions',
             'Vehicles, vessels and aircraft',
             'Links between people and companies suggesting an economic group or the use of nominees',
             'Transfers and transactions that may amount to fraud against creditors',
@@ -453,7 +451,7 @@ const en: Content = {
         {
           h2: 'Why local knowledge matters',
           paras: [
-            'Brazilian enforcement relies on court-run systems for freezing bank accounts and locating assets, and on procedures, such as attaching awards in other lawsuits or piercing the corporate veil, that work differently from those in other jurisdictions. Knowing where to look and what to ask the judge for makes the difference between a claim that stalls and one that is paid.',
+            'Brazilian enforcement relies on court-run systems for freezing bank accounts and locating assets, and on procedures, such as piercing the corporate veil, that work differently from those in other jurisdictions. Knowing where to look and what to ask the judge for makes the difference between a claim that stalls and one that is paid.',
           ],
         },
       ],

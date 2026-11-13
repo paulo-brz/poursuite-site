@@ -90,7 +90,7 @@ const it: Content = {
       debtor: 'Debitore',
       debtorDetail: 'Nessun bene intestato',
       nodes: [
-        { label: 'Credito in un’altra causa', detail: 'Pignoramento presso terzi' },
+        { label: 'Società collegata al debitore', detail: 'Gruppo economico' },
         { label: 'Quote di una holding di famiglia', detail: 'Abuso dello schermo societario' },
         { label: 'Immobile intestato a terzi', detail: 'Atto in frode all’esecuzione' },
         { label: 'Eredità non divisa', detail: 'Pignoramento della quota ereditaria' },
@@ -129,7 +129,7 @@ const it: Content = {
       },
       {
         title: 'Indagine patrimoniale',
-        text: 'Cerchiamo immobili, società, partecipazioni, crediti in altre cause e operazioni sospette del debitore e delle persone a lui collegate.',
+        text: 'Cerchiamo immobili, società, partecipazioni e operazioni sospette del debitore e delle persone a lui collegate.',
       },
       {
         title: 'Proposta',
@@ -261,7 +261,7 @@ const it: Content = {
           h2: 'Perché tante esecuzioni si bloccano in Brasile',
           paras: [
             'La maggior parte delle esecuzioni non fallisce per mancanza di diritto, ma per mancanza di informazioni. Dopo le ricerche automatiche (blocco dei conti, pubblico registro dei veicoli e dichiarazioni dei redditi), molte procedure vengono sospese e avanzano verso la prescrizione in corso di causa (art. 921 del Codice di procedura civile).',
-            'Il patrimonio però raramente scompare. Di solito si trova in una società di famiglia, intestato a parenti, in un credito che il debitore vanta in un’altra causa o in un’eredità non ancora divisa.',
+            'Il patrimonio però raramente scompare. Di solito si trova in una società di famiglia, intestato a parenti o in un’eredità non ancora divisa.',
           ],
         },
         {
@@ -269,7 +269,6 @@ const it: Content = {
           bullets: [
             'Revisione del fascicolo e dei tentativi di pignoramento precedenti',
             'Indagine patrimoniale sul debitore, sui soci e su persone e società collegate',
-            'Ricerca di crediti del debitore in altre cause, per pignorarli (art. 860 del Codice di procedura civile)',
             'Individuazione di atti in frode all’esecuzione, frodi ai creditori e abusi della personalità giuridica',
             'Strategia processuale con gli avvocati del caso, incluso l’incidente di superamento dello schermo societario (artt. 133-137 del Codice di procedura civile)',
             'Report periodici su ogni sviluppo e sulla prossima azione',
@@ -321,7 +320,6 @@ const it: Content = {
           bullets: [
             'Immobili del debitore, del coniuge, di parenti e di società collegate',
             'Partecipazioni societarie, holding di famiglia e modifiche societarie recenti',
-            'Crediti da incassare in altre cause, successioni e vendite giudiziarie',
             'Veicoli, imbarcazioni e aeromobili',
             'Legami tra persone e società che indichino un gruppo economico o prestanome',
             'Trasferimenti e operazioni che possano costituire frode ai creditori',
@@ -453,7 +451,7 @@ const it: Content = {
         {
           h2: 'Perché conta conoscere il terreno',
           paras: [
-            'L’esecuzione in Brasile si basa su sistemi giudiziari per bloccare i conti e localizzare i beni, e su strumenti, come il pignoramento di crediti in altre cause o il superamento dello schermo societario, che funzionano diversamente rispetto all’Italia e agli altri ordinamenti europei. Sapere dove cercare e cosa chiedere al giudice fa la differenza tra un credito che si blocca e uno che viene pagato.',
+            'L’esecuzione in Brasile si basa su sistemi giudiziari per bloccare i conti e localizzare i beni, e su strumenti, come il superamento dello schermo societario, che funzionano diversamente rispetto all’Italia e agli altri ordinamenti europei. Sapere dove cercare e cosa chiedere al giudice fa la differenza tra un credito che si blocca e uno che viene pagato.',
           ],
         },
       ],

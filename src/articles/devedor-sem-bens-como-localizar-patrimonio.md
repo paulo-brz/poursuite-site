@@ -25,8 +25,6 @@ O problema é que essas ferramentas encontram o que está no CPF ou no CNPJ do d
 
 ## Onde o patrimônio costuma estar
 
-**Em créditos a receber em outros processos.** O devedor pode ser autor de outra ação, ter valores a levantar em uma arrematação ou ser credor em uma recuperação judicial. Esse crédito pode ser penhorado no rosto dos autos (art. 860 do CPC), e o valor fica reservado ao credor antes de chegar às mãos do devedor.
-
 **Em heranças não partilhadas.** O quinhão do herdeiro em um inventário em andamento pode ser penhorado, assim como os bens que vierem a ser partilhados a ele.
 
 **Em empresas e holdings.** Quotas e ações são penhoráveis (art. 861 do CPC). Quando o devedor transfere bens pessoais para uma empresa da qual é sócio, para escondê-los dos credores, é possível pedir a desconsideração inversa da personalidade jurídica.
@@ -38,7 +36,7 @@ O problema é que essas ferramentas encontram o que está no CPF ou no CNPJ do d
 - **Incidente de desconsideração da personalidade jurídica** (arts. 133 a 137 do CPC, com os requisitos do art. 50 do Código Civil): permite alcançar bens de sócios por dívidas da empresa ou, na forma inversa, bens da empresa por dívidas do sócio, quando há abuso, desvio de finalidade ou confusão patrimonial.
 - **Fraude à execução** (art. 792 do CPC): a alienação de bens quando já havia ação capaz de levar o devedor à insolvência é ineficaz perante o credor, sem necessidade de ação própria, observadas as regras de proteção ao terceiro de boa-fé.
 - **Fraude contra credores** (arts. 158 a 165 do Código Civil): para transferências anteriores ao processo, a ação pauliana pode anular o ato.
-- **Penhora no rosto dos autos e penhora de quotas**, para créditos e participações societárias.
+- **Penhora de quotas e ações** (art. 861 do CPC), para participações societárias.
 
 ## Cuidado com o tempo
 

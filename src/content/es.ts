@@ -90,7 +90,7 @@ const es: Content = {
       debtor: 'Deudor',
       debtorDetail: 'Ningún bien a su nombre',
       nodes: [
-        { label: 'Crédito en otro proceso', detail: 'Embargo del crédito en autos' },
+        { label: 'Empresa vinculada al deudor', detail: 'Grupo económico' },
         { label: 'Acciones de un holding familiar', detail: 'Levantamiento inverso del velo' },
         { label: 'Inmueble a nombre de un tercero', detail: 'Fraude en la ejecución' },
         { label: 'Herencia no repartida', detail: 'Embargo de la cuota hereditaria' },
@@ -129,7 +129,7 @@ const es: Content = {
       },
       {
         title: 'Investigación patrimonial',
-        text: 'Buscamos inmuebles, sociedades, participaciones, créditos en otros procesos y movimientos sospechosos del deudor y de personas vinculadas.',
+        text: 'Buscamos inmuebles, sociedades, participaciones y movimientos sospechosos del deudor y de personas vinculadas.',
       },
       {
         title: 'Propuesta',
@@ -261,7 +261,7 @@ const es: Content = {
           h2: 'Por qué se paralizan tantas ejecuciones en Brasil',
           paras: [
             'La mayoría de las ejecuciones no fracasa por falta de derecho, sino por falta de información. Tras las búsquedas automáticas (embargo de cuentas, registro de vehículos y declaraciones de renta), muchos procesos se suspenden y avanzan hacia la prescripción intercurrente (art. 921 del Código de Proceso Civil).',
-            'Pero el patrimonio rara vez desaparece. Suele estar en una empresa familiar, a nombre de parientes, en un crédito que el deudor tiene en otro juicio o en una herencia aún no repartida.',
+            'Pero el patrimonio rara vez desaparece. Suele estar en una empresa familiar, a nombre de parientes o en una herencia aún no repartida.',
           ],
         },
         {
@@ -269,7 +269,6 @@ const es: Content = {
           bullets: [
             'Revisión del proceso y de los intentos de embargo anteriores',
             'Investigación patrimonial del deudor, de sus socios y de personas y empresas vinculadas',
-            'Búsqueda de créditos del deudor en otros procesos para embargarlos (art. 860 del Código de Proceso Civil)',
             'Identificación de fraudes en la ejecución, fraudes a acreedores y abuso de la personalidad jurídica',
             'Estrategia procesal con los abogados del caso, incluido el incidente de levantamiento del velo societario (arts. 133 a 137 del Código de Proceso Civil)',
             'Informes periódicos sobre cada avance y la próxima medida',
@@ -321,7 +320,6 @@ const es: Content = {
           bullets: [
             'Inmuebles del deudor, de su cónyuge, de parientes y de sociedades vinculadas',
             'Participaciones societarias, holdings familiares y cambios societarios recientes',
-            'Créditos por cobrar en otros procesos, sucesiones y subastas judiciales',
             'Vehículos, embarcaciones y aeronaves',
             'Vínculos entre personas y empresas que indiquen grupo económico o testaferros',
             'Transferencias y operaciones que puedan constituir fraude a acreedores',
@@ -453,7 +451,7 @@ const es: Content = {
         {
           h2: 'Por qué importa conocer el terreno',
           paras: [
-            'La ejecución en Brasil se apoya en sistemas judiciales para bloquear cuentas y localizar bienes, y en procedimientos, como el embargo de créditos en otros juicios o el levantamiento del velo societario, que funcionan de forma distinta a los de otros países. Saber dónde buscar y qué pedir al juez marca la diferencia entre un crédito que se paraliza y uno que se cobra.',
+            'La ejecución en Brasil se apoya en sistemas judiciales para bloquear cuentas y localizar bienes, y en procedimientos, como el levantamiento del velo societario, que funcionan de forma distinta a los de otros países. Saber dónde buscar y qué pedir al juez marca la diferencia entre un crédito que se paraliza y uno que se cobra.',
           ],
         },
       ],

@@ -90,7 +90,7 @@ const fr: Content = {
       debtor: 'Débiteur',
       debtorDetail: 'Aucun bien à son nom',
       nodes: [
-        { label: 'Créance dans un autre procès', detail: 'Saisie de la créance' },
+        { label: 'Société liée au débiteur', detail: 'Groupe économique' },
         { label: 'Parts d’une holding familiale', detail: 'Levée inversée du voile social' },
         { label: 'Immeuble au nom d’un tiers', detail: 'Fraude à l’exécution' },
         { label: 'Succession non partagée', detail: 'Saisie de la part successorale' },
@@ -129,7 +129,7 @@ const fr: Content = {
       },
       {
         title: 'Enquête patrimoniale',
-        text: 'Nous recherchons immeubles, sociétés, participations, créances dans d’autres procès et opérations suspectes du débiteur et de ses proches.',
+        text: 'Nous recherchons immeubles, sociétés, participations et opérations suspectes du débiteur et de ses proches.',
       },
       {
         title: 'Proposition',
@@ -261,7 +261,7 @@ const fr: Content = {
           h2: 'Pourquoi tant d’exécutions s’enlisent au Brésil',
           paras: [
             'La plupart des exécutions n’échouent pas faute de droit, mais faute d’information. Après les recherches automatisées (blocage des comptes, fichiers des véhicules et déclarations fiscales), de nombreuses procédures sont suspendues et s’acheminent vers la prescription en cours d’instance (art. 921 du Code de procédure civile).',
-            'Le patrimoine, pourtant, disparaît rarement. On le retrouve dans une société familiale, au nom de proches, dans une créance que le débiteur détient dans un autre procès ou dans une succession non encore partagée.',
+            'Le patrimoine, pourtant, disparaît rarement. On le retrouve dans une société familiale, au nom de proches ou dans une succession non encore partagée.',
           ],
         },
         {
@@ -269,7 +269,6 @@ const fr: Content = {
           bullets: [
             'Revue du dossier et des tentatives de saisie antérieures',
             'Enquête patrimoniale sur le débiteur, ses associés et les personnes et sociétés liées',
-            'Recherche de créances du débiteur dans d’autres procès en vue de leur saisie (art. 860 du Code de procédure civile)',
             'Identification de la fraude à l’exécution, de la fraude paulienne et des abus de la personnalité morale',
             'Stratégie procédurale avec les avocats du dossier, y compris l’incident de levée du voile social (art. 133 à 137 du Code de procédure civile)',
             'Rapports réguliers sur chaque avancée et la prochaine mesure',
@@ -321,7 +320,6 @@ const fr: Content = {
           bullets: [
             'Immeubles du débiteur, de son conjoint, de proches et de sociétés liées',
             'Participations, holdings familiales et modifications statutaires récentes',
-            'Créances à recevoir dans d’autres procès, successions et ventes judiciaires',
             'Véhicules, bateaux et aéronefs',
             'Liens entre personnes et sociétés révélant un groupe économique ou des prête-noms',
             'Transferts et opérations susceptibles de constituer une fraude aux droits des créanciers',
@@ -453,7 +451,7 @@ const fr: Content = {
         {
           h2: 'Pourquoi la connaissance du terrain compte',
           paras: [
-            'L’exécution au Brésil repose sur des systèmes judiciaires de blocage des comptes et de localisation des biens, ainsi que sur des mécanismes, comme la saisie de créances dans d’autres procès ou la levée du voile social, qui fonctionnent différemment des procédures européennes. Savoir où chercher et quoi demander au juge fait la différence entre une créance qui s’enlise et une créance payée.',
+            'L’exécution au Brésil repose sur des systèmes judiciaires de blocage des comptes et de localisation des biens, ainsi que sur des mécanismes, comme la levée du voile social, qui fonctionnent différemment des procédures européennes. Savoir où chercher et quoi demander au juge fait la différence entre une créance qui s’enlise et une créance payée.',
           ],
         },
       ],
